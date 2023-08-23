@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Box, Typography } from '@mui/material';
 import Round from './Round';
 import ResultsPage from './ResultsPage';
-import { Activity, RoundData, QuestionData } from './types';
+import { Activity, RoundData, QuestionData } from '../types';
 
 interface QuizProps {
   activity: Activity;
@@ -19,7 +20,7 @@ const Quiz: React.FC<QuizProps> = ({ activity }) => {
   if (roundIndex >= activity.questions.length) {
     return <ResultsPage userAnswers={userAnswers} activity={activity} />;
   }
-  
+
   const currentRoundOrQuestion = activity.questions[roundIndex];
 
   if ('questions' in currentRoundOrQuestion) {
@@ -27,8 +28,10 @@ const Quiz: React.FC<QuizProps> = ({ activity }) => {
 
     return (
       <Round
+        activity={activity}
         round={currentRound}
         onNextRound={onNextRound}
+        virtual={false}
       />
     );
   } else {
@@ -42,13 +45,14 @@ const Quiz: React.FC<QuizProps> = ({ activity }) => {
       }
       const currentRound = virtualRound as RoundData;
       return (
-        <div>
-          <h2>{activity.activity_name}</h2>
+        <Box>
           <Round
+            activity={activity}
             round={currentRound}
             onNextRound={onNextRound}
+            virtual={true}
           />
-        </div>
+        </Box>
       );
     }
   }

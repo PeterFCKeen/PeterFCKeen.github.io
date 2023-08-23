@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { RoundData } from './types'; // Adjust the import path based on your directory structure
+import { Box, Typography } from '@mui/material';
+import { RoundData, Activity } from '../types';
 import Question from './Question';
-import RoundScreen from './RoundScreen'; // Import the RoundScreen component
+import RoundScreen from './RoundScreen';
 
 interface RoundProps {
   round: RoundData;
   onNextRound: (userResponses: boolean[]) => void;
+  activity: Activity;
+  virtual: boolean;
 }
 
-const Round: React.FC<RoundProps> = ({ round, onNextRound }) => {
+const Round: React.FC<RoundProps> = ({ activity, round, onNextRound, virtual }) => {
   const [questionIndex, setQuestionIndex] = useState(-1); // Start with -1 to show RoundScreen first
   const [showRoundScreen, setShowRoundScreen] = useState(true);
   const [userAnswers, setUserAnswers] = useState<boolean[]>([]);
@@ -48,21 +51,30 @@ const Round: React.FC<RoundProps> = ({ round, onNextRound }) => {
   }, [showRoundScreen]);
 
   return (
-    <div className="round">
+    <Box className="round">
       {showRoundScreen ? (
         <RoundScreen roundTitle={round.round_title} />
       ) : (
         currentQuestion && (
-          <Question
-            question={currentQuestion.stimulus}
-            onAnswerSelected={handleAnswerSelected}
-            onNextQuestion={() => {
-              setQuestionIndex(questionIndex + 1);
-            }}
-          />
+          <Box>
+            <Typography variant="h4" component="h2" align="center">
+              {
+                virtual
+                ? activity.activity_name
+                : `Activity 1 - Round ${round.order}`
+              }
+            </Typography>
+            <Question
+              question={currentQuestion.stimulus}
+              onAnswerSelected={handleAnswerSelected}
+              onNextQuestion={() => {
+                setQuestionIndex(questionIndex + 1);
+              }}
+            />
+          </Box>
         )
       )}
-    </div>
+    </Box>
   );
 };
 
