@@ -4,13 +4,13 @@ import { Box, Button, Typography } from '@mui/material';
 interface QuestionProps {
   question: string;
   onAnswerSelected: (isCorrect: boolean) => void;
-  onNextQuestion: () => void; // Add this prop
+  onNextQuestion: () => void;
 }
 
 const Question: React.FC<QuestionProps> = ({ question, onAnswerSelected, onNextQuestion }) => {
   const handleAnswerSelected = (isCorrect: boolean) => {
     onAnswerSelected(isCorrect);
-    onNextQuestion(); // Move to the next question
+    onNextQuestion();
   };
 
   return (

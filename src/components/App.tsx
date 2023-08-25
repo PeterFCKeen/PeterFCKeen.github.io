@@ -11,6 +11,9 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 interface AppData {
   activities: Activity[];
   name: string;
@@ -41,7 +44,7 @@ function App() {
 
   const handleSelectActivity = (index: number) => {
     setCurrentActivity(index);
-    navigate(`/quiz/`); // Use navigate to change the route
+    navigate(`/quiz/`);
   };
 
   if (isLoading) {

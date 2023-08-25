@@ -36,7 +36,7 @@ const Round: React.FC<RoundProps> = ({ activity, round, onNextRound, virtual }) 
       onNextRound(userAnswers);
     } else {
       setShowRoundScreen(false);
-      setQuestionIndex(prevIndex => prevIndex + 1); // Move to the next question
+      setQuestionIndex(prevIndex => prevIndex + 1);
     }
   };
 
@@ -45,7 +45,7 @@ const Round: React.FC<RoundProps> = ({ activity, round, onNextRound, virtual }) 
       console.log('timing out')
       setTimeout(() => {
         setQuestionIndex(0);
-        setShowRoundScreen(false); // Hide the RoundScreen after 2 seconds
+        setShowRoundScreen(false);
       }, 2000);
     }
   }, [showRoundScreen]);

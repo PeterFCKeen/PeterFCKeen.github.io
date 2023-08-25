@@ -1,46 +1,107 @@
-# Getting Started with Create React App
+# Quiz
+A simple quiz application designed to educate students about English grammar and language usage. Users are prompted to determine if sentences exhibit correct grammar and logical coherence. Users are then presented with their results at the end of their activity
+Support implemented for round and non-based activities.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Technologies Used
+* React
+* NodeJS
+* TypeScript
 
-## Available Scripts
+## Setup
 
-In the project directory, you can run:
+Dependencies include:
+React,
+Typescript,
+Nodejs,
+Material UI
 
-### `npm start`
+### Steps
+Set up the virtual machine.
+```
+sudo apt-get update
+sudo yum install nodejs npm
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Installation of the Quiz.
+```
+git clone https://github.com/PeterFCKeen/Quiz.git
+cd Quiz
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+npm install
+```
 
-### `npm test`
+If you get the 'ERR_OSSL_EVP_UNSUPPORTED' error.
+```
+export NODE_OPTIONS=--openssl-legacy-provider
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Specify url of machine running the proxy machine
+```
+vim .env
 
-### `npm run build`
+REACT_APP_PROXY_URL=*url*
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Run in Dev
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Run the Quiz in dev mode.
+```
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Open another terminal to run the proxy server.
+```
+cd Quiz/
+node server.js
+```
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Run in Prod
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Run the proxy server as a forever script.
+```
+sudo npm install -g forever
+forever start server.js
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Build the quiz.
+```
+npm run build
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Set up Nginx to serve the quiz.
+```
+sudo yum install nginx
 
-## Learn More
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Append the location rule to your Nginx configuration. Next the location code inside of your existing server config.
+```
+sudo vim /etc/nginx/nginx.conf
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+server {
+    ...
+    location / {
+        root /path/to/your/react/application/build;
+        index index.html;
+        try_files $uri /index.html;
+    }
+    ...
+}
+```
+
+Start the service
+```
+sudo service nginx start</li>
+```
+
+## Improvements
+### Proxy Server
+The Proxy server has a knock on affect for the infrastructure of this project. As we need to have another process running to facilitate the proxy. This complicated the release infrastructure.
+
+Ideally this project would be running in Docker containers. However we'd need two containers. One for the running of the application and one for the CORS proxy server.
+
+One ideal solution could be to lambda-ise the proxy server and docker the app. Deploy the app to S3 and redirect the url to the lambda function.
+
+### Test coverage
+Implement further tests to improve the coverage of the application. Tests were sidelined given time taken to learn react for this project. Next ticket would be to target tests so we can improve our confidence in the code.

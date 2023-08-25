@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, Typography, Box } from '@mui/material';
+import { Activity } from '../types';
 
 interface HomeProps {
-  activities: any[]; // Replace with your type for activities
+  activities: Activity[];
   onSelectActivity: (index: number) => void;
 }
 
